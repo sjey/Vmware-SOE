@@ -1,0 +1,77 @@
+{
+  "builders": [
+    {
+      "CPUs": "{{user `vm-cpu-num`}}",
+      "RAM": "{{user `vm-mem-size`}}",
+      "RAM_reserve_all": false,
+      "boot_wait": "5s",
+      "http_directory": "./http",
+      "floppy_files": [ "./http/user-data", "./http/meta-data"],
+      "floppy_label": "cidata",
+      "boot_command": [
+        "<enter><enter><f6><esc><wait> ",
+        "autoinstall ds=nocloud-net;",
+        "<enter>"
+      ],
+      "boot_order": "disk,cdrom",
+      "cluster": "{{user `cluster`}}",
+      "convert_to_template": "true",
+      "datacenter": "{{user `datacenter`}}",
+      "datastore": "{{user `datastore`}}",
+      "disk_controller_type": "pvscsi",
+      "folder": "{{user `folder`}}",
+      "guest_os_type": "ubuntu64Guest",
+      "host": "{{user `host`}}",
+      "insecure_connection": "true",
+      "iso_paths": "{{user `iso-url`}}",
+      "network_adapters": [
+        {
+          "network": "{{user `network`}}",
+          "network_card": "vmxnet3"
+        }
+      ],
+      "password": "{{user `vcenter-password`}}",
+      "ssh_timeout": "20m",
+      "ssh_handshake_attempts": "100000",
+      "shutdown_command": "echo 'ubuntu'|sudo -S shutdown -P now",
+      "ssh_password": "{{user `ssh-password`}}",
+      "ssh_username": "{{user `ssh-username`}}",
+      "storage": [
+        {
+          "disk_size": "{{user `vm-disk-size`}}",
+          "disk_thin_provisioned": true
+        }
+      ],
+      "type": "vsphere-iso",
+      "username": "{{user `vcenter-username`}}",
+      "vcenter_server": "{{user `vcenter-server`}}",
+      "vm_name": "packer-{{user `vm-name`}}-{{timestamp}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "inline": [
+        "echo 'Packer Template Build -- Complete'"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "cluster": "SOE",
+    "datacenter": "Ngunnawal",
+    "datastore": "esx01-ds",
+    "folder": "Templates",
+    "iso-url": "[esx01-ds] /ISO-Linux/ubuntu-20.04.2-live-server-amd64.iso",
+    "network": "VM Network",
+    "ssh-password": "ubuntu",
+    "ssh-username": "ubuntu",
+    "vcenter-password": "P@ssw0rd",
+    "vcenter-server": "192.168.1.201",
+    "vcenter-username": "administrator@vsphere.local",
+    "vm-cpu-num": "1",
+    "vm-disk-size": "10240",
+    "vm-mem-size": "1024",
+    "vm-name": "Ubuntu-2004-Template"
+  }
+}
+

@@ -1,0 +1,9 @@
+---
+- name: install Apache webserver
+  hosts: all
+  sudo: yes
+  tasks:
+  - name: install apache2
+    dnf:  
+      name: apache2  
+      state: latest
